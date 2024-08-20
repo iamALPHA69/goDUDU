@@ -34,14 +34,14 @@ var (
 	authorizedUsers map[int64]Authorization
 	ddosSessions    map[int64]*DDOSSession
 	authorizedFile        = "authorized_users.json"
-	botOwnerID      int64 = 6536211276 // Replace with your actual bot owner chat ID
+	botOwnerID      int64 = 1057412250 // Replace with your actual bot owner chat ID
 
 	kolkataLocation *time.Location // IST timezone
 )
 
 func main() {
 	// Replace with your actual bot token
-	botToken := "7196413356:AAHjLMtXevwe7n2TvqYiVBByNgjpg9kp3GI"
+	botToken := "7437565742:AAHvZg8wPAi4510VISEs2EA87iUk5T5S9JM"
 
 	bot, err := tgbotapi.NewBotAPI(botToken)
 	if err != nil {
