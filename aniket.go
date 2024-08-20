@@ -84,7 +84,7 @@ func main() {
 	"🌟 *I'm here to help you with DDoS By ALPHA.* 🌟\n\n"+
 	"*Use the following commands to get started:*\n\n"+
 	"```"+
-	"🔹 [IP]:[Port] [Duration] - Start sending DDoS.\n"+
+	"🔹 /send [IP]:[Port] [Duration] - Start sending DDoS.\n"+
 	"🔹 /recent              - Repeat the last used DDoS send command.\n"+
 	"🔹 /stop                - Stop the current DDoS.\n"+
 	"🔹 /add [chat_id] [days] - Admin only: Authorize a user for specified days.\n"+
