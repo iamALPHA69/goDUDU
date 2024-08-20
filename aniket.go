@@ -80,38 +80,44 @@ func main() {
 		case "start":
 			userName := getUserName(update.Message)
 			welcomeMessage := fmt.Sprintf(
-				"**✨ Welcome, @%s! ✨**\n\n"+
-				"**🌟 I'm here to help you with DDoS By ALPHA. 🌟**\n\n"+
-				"**Use the following commands to get started:**\n\n"+
-				"🔹 /send [IP]:[Port] [Duration] - Start sending DDoS.\n"+
-				"🔹 /recent              - Repeat the last used DDoS send command.\n"+
-				"🔹 /stop                - Stop the current DDoS.\n"+
-				"🔹 /plan                - Check your authorization status and remaining time.\n"+
-				"**✨ THIS BOT/DDOS CREATED BY @OGxALPHA ✨**\n"+
-				"**✨ DM TO ASK FOR PRICING @OGxALPHA ✨**\n\n"+
-				"**⚠️ Please note that performing DDoS attacks is illegal and unethical. ⚠️**\n"+
-				"**⚠️ I am not responsible for any misuse of this tool. ⚠️**\n"+
-				"**⚠️ Users are advised to stay alert and use this service responsibly. ⚠️**",
+				"<b>Welcome, @%s</b>\n\n"+
+
+					"<b>Use the following commands to get started:</b>\n\n"+
+
+					"💮 /send [IP]:[Port] [Duration] - Start sending DDoS.\n"+
+					"💮 /recent - Repeat the last used DDoS send command.\n"+
+					"💮 /stop - Stop the current DDoS.\n"+
+					"💮 /plan - Check your authorization status and remaining time.\n\n"+
+
+					"<b>THIS BOT/DDOS CREATED BY @OGxALPHA\n"+
+					"DM TO ASK FOR PRICING @OGxALPHA</b>\n\n"+
+
+					"<code>⚠️ Please note that performing DDoS attacks is illegal and unethical.\n"+
+					"⚠️ I am not responsible for any misuse of this tool.\n"+
+					"⚠️ Users are advised to stay alert and use this service responsibly.</code>",
 				userName,
 			)
-
-			bot.Send(tgbotapi.NewMessage(chatID, welcomeMessage))
-
+			msg := tgbotapi.NewMessage(chatID, welcomeMessage)
+			msg.ParseMode = "HTML"
+			bot.Send(msg)
+		
 		case "admeme":
 			if chatID != botOwnerID {
 				bot.Send(tgbotapi.NewMessage(chatID, "You are not authorized to use this command."))
 				continue
 			}
-
+		
 			adminMessage := fmt.Sprintf(
-				" *Welcome, @%s!* ✨\n\n"+
-					"**🫧 /add [chat_id] [days] - Admin only: Authorize a user for specified days.**\n"+
-					"**🫧 /remove [chat_id]    - Admin only: Remove an authorized user.**\n"+
-					"**🫧 /broadcast [message] - Admin only: Broadcast a message to all authorized users.**\n",
+				"<b>Welcome, @%s</b>\n\n"+
+					"🫧 /add [chat_id] [days] <b>- Admin only: Authorize a user for specified days.</b>\n"+
+					"🫧 /remove [chat_id] <b>- Admin only: Remove an authorized user.</b>\n"+
+					"🫧 /broadcast [message] <b>- Admin only: Broadcast a message to all authorized users.</b>",
 				getUserName(update.Message),
 			)
-
-			bot.Send(tgbotapi.NewMessage(chatID, adminMessage))
+			msg := tgbotapi.NewMessage(chatID, adminMessage)
+			msg.ParseMode = "HTML"
+			bot.Send(msg)
+		
 
 		case "send":
 			if !isAuthorized(chatID, bot) {
