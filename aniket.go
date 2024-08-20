@@ -33,7 +33,7 @@ type DDOSSession struct {
 var (
 	authorizedUsers map[int64]Authorization
 	ddosSessions    map[int64]*DDOSSession
-	authorizedFile        = "authorized_users.json"
+	authorizedFile  = "authorized_users.json"
 	botOwnerID      int64 = 1057412250 // Replace with your actual bot owner chat ID
 
 	kolkataLocation *time.Location // IST timezone
@@ -80,28 +80,38 @@ func main() {
 		case "start":
 			userName := getUserName(update.Message)
 			welcomeMessage := fmt.Sprintf(
-				"✨ *Welcome, %s!* ✨\n\n"+
-	"🌟 *I'm here to help you with DDoS By ALPHA.* 🌟\n\n"+
-	"*Use the following commands to get started:*\n\n"+
-	"```"+
-	"🔹 /send [IP]:[Port] [Duration] - Start sending DDoS.\n"+
-	"🔹 /recent              - Repeat the last used DDoS send command.\n"+
-	"🔹 /stop                - Stop the current DDoS.\n"+
-	"🔹 /add [chat_id] [days] - Admin only: Authorize a user for specified days.\n"+
-	"🔹 /remove [chat_id]    - Admin only: Remove an authorized user.\n"+
-	"🔹 /plan                - Check your authorization status and remaining time.\n"+
-	"🔹 /broadcast [message] - Admin only: Broadcast a message to all authorized users.\n"+
-	"🔹 /chatid              - Get your chat ID.\n\n"+
-	"```\n"+
-	"✨ *THIS BOT/DDOS CREATED BY @OGxALPHA* ✨\n"+
-	"✨ *DM TO ASK FOR PRICING @OGxALPHA* ✨\n\n"+
-	"⚠️ *Please note that performing DDoS attacks is illegal and unethical.* ⚠️\n"+
-	"⚠️ *I am not responsible for any misuse of this tool.* ⚠️\n"+
-	"⚠️ *Users are advised to stay alert and use this service responsibly.* ⚠️",
+				"**✨ Welcome, @%s! ✨**\n\n"+
+				"**🌟 I'm here to help you with DDoS By ALPHA. 🌟**\n\n"+
+				"**Use the following commands to get started:**\n\n"+
+				"🔹 /send [IP]:[Port] [Duration] - Start sending DDoS.\n"+
+				"🔹 /recent              - Repeat the last used DDoS send command.\n"+
+				"🔹 /stop                - Stop the current DDoS.\n"+
+				"🔹 /plan                - Check your authorization status and remaining time.\n"+
+				"**✨ THIS BOT/DDOS CREATED BY @OGxALPHA ✨**\n"+
+				"**✨ DM TO ASK FOR PRICING @OGxALPHA ✨**\n\n"+
+				"**⚠️ Please note that performing DDoS attacks is illegal and unethical. ⚠️**\n"+
+				"**⚠️ I am not responsible for any misuse of this tool. ⚠️**\n"+
+				"**⚠️ Users are advised to stay alert and use this service responsibly. ⚠️**",
 				userName,
 			)
 
 			bot.Send(tgbotapi.NewMessage(chatID, welcomeMessage))
+
+		case "admeme":
+			if chatID != botOwnerID {
+				bot.Send(tgbotapi.NewMessage(chatID, "You are not authorized to use this command."))
+				continue
+			}
+
+			adminMessage := fmt.Sprintf(
+				" *Welcome, @%s!* ✨\n\n"+
+					"**🫧 /add [chat_id] [days] - Admin only: Authorize a user for specified days.**\n"+
+					"**🫧 /remove [chat_id]    - Admin only: Remove an authorized user.**\n"+
+					"**🫧 /broadcast [message] - Admin only: Broadcast a message to all authorized users.**\n",
+				getUserName(update.Message),
+			)
+
+			bot.Send(tgbotapi.NewMessage(chatID, adminMessage))
 
 		case "send":
 			if !isAuthorized(chatID, bot) {
@@ -264,18 +274,6 @@ func main() {
 
 			broadcastMessage := strings.Join(args, " ")
 			broadcastToAll(bot, broadcastMessage)
-
-		case "chatid":
-			chatIDMessage := fmt.Sprintf("🆔 Your Chat ID: %d\n\nTap to copy: [ %d ]", chatID, chatID)
-			copyButton := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData(fmt.Sprintf("%d", chatID), fmt.Sprintf("%d", chatID)),
-				),
-			)
-
-			msg := tgbotapi.NewMessage(chatID, chatIDMessage)
-			msg.ReplyMarkup = copyButton
-			bot.Send(msg)
 
 		default:
 			bot.Send(tgbotapi.NewMessage(chatID, "Unknown command. Please use /start to see available commands."))
@@ -443,4 +441,3 @@ func broadcastToAll(bot *tgbotapi.BotAPI, message string) {
 	}
 	wg.Wait()
 }
-
